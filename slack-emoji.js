@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 'use strict';
 
-const Slack = require('slack-node');
 const fs = require('fs');
 const download = require('download');
 const meow = require('meow');
+const { WebClient } = require('@slack/client');
 
-const apiToken = process.env.SLACK_API_TOKEN;
-const slack = new Slack(apiToken);
+const token = process.env.SLACK_API_TOKEN;
+const web = new WebClient(token);
 
 process.on('unhandledRejection', console.dir);
 
@@ -33,10 +33,10 @@ const cli = meow(`
   }
 });
 
-slack.api("emoji.list", function (err, res) {
+web.emoji.list().then(res => {
 
   if (cli.flags.download) {
-    Object.keys(res.emoji).forEach( key => {
+    const tasks = Object.keys(res.emoji).map( key => {
       const url = res.emoji[key];
       if(url.match(/alias/)) return;
 
@@ -45,11 +45,12 @@ slack.api("emoji.list", function (err, res) {
         fs.writeFileSync(`./emoji/${key}${extention}`, data);
       }).then(() => {
         console.log(`Downloaded: ${key}${extention}`);
+      }).catch(err => {
+        console.error(`Error: ${key}\t${url}`);
       });
     });
     return;
   }
 
   console.log(res.emoji);
-
 });
