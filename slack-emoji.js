@@ -33,20 +33,45 @@ const cli = meow(`
   }
 });
 
+// async function dl(retry, url){
+//   // const data = await download(url).catch(err => {
+//   //   if(retry === 0) {
+//   //     console.error(`Error: ${key}\t${url}`);
+//   //     console.error(err);
+//   //     return;
+//   //   } else {
+//   //     dl(retry - 1, url);
+//   //   }
+//   // });
+//   const data = await download(url)
+//   fs.writeFileSync(`./emoji/${key}${extention}`, data);
+//   console.log(`Done: ${key}${extention}`);
+// }
+
 web.emoji.list().then(res => {
 
   if (cli.flags.download) {
-    const tasks = Object.keys(res.emoji).map( key => {
+    Object.keys(res.emoji).map( key => {
       const url = res.emoji[key];
       if(url.match(/alias/)) return;
 
       const extention = url.match(/\.[^\.]+$/);
+      // await dl(3, url);
       download(url).then(data => {
         fs.writeFileSync(`./emoji/${key}${extention}`, data);
       }).then(() => {
         console.log(`Downloaded: ${key}${extention}`);
       }).catch(err => {
-        console.error(`Error: ${key}\t${url}`);
+        if (err.code === 'ENOTFOUND') {
+          download(url).then(data => {
+            fs.writeFileSync(`./emoji/${key}${extention}`, data);
+          }).then(() => {
+            console.log(`Retry Downloaded: ${key}${extention}`);
+          }).catch(err => {
+            console.error(`Error: ${key}\t${url}`);
+            console.error(err);
+          });
+        }
       });
     });
     return;
