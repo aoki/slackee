@@ -7,6 +7,8 @@ const meow = require('meow');
 const { WebClient } = require('@slack/client');
 const Table = require('cli-table2');
 const Ora = require('ora');
+const chalk = require('chalk');
+
 
 const token = process.env.SLACK_API_TOKEN;
 const web = new WebClient(token);
@@ -14,13 +16,15 @@ const web = new WebClient(token);
 process.on('unhandledRejection', console.dir);
 
 const cli = meow(`
-  Usage:
-    $ slack-emoji
+  ${chalk.green.bold('Usage')}:
+    $ ${process.argv[1].split('/').reverse()[0]} [Options]
 
-  Options:
+  ${chalk.green.bold('Options')}:
     --list, -l      List emoji on Slack
     --download, -d  Download emoji
     --output, -o    Specify output directory
+    --version       Show version
+    --help          Show help(This message)
 `, {
   flags: {
     list: {
@@ -100,6 +104,5 @@ function downloadEmoji() {
 (async () => {
   if (cli.flags.list) listEmoji();
   if (cli.flags.download) downloadEmoji();
+  cli.showHelp();
 })();
-
-
