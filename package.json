@@ -1,28 +1,30 @@
 {
-  "name": "slack-emoji-exporter",
+  "name": "slackee",
   "version": "1.0.0",
   "description": "",
-  "main": "slack-emoji.js",
-  "bin": "slack-emoji.js",
+  "main": "slackee.js",
+  "bin": {
+    "slackee": "slackee.js",
+    "slack-emoji-exporter": "slackee.js"
+  },
   "scripts": {
-    "start": "node slack-emoji.js",
+    "start": "node slackee.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/ringohub/slack-emoji-exporter.git"
+    "url": "git+ssh://git@github.com/ringohub/slackee.git"
   },
   "author": "aoki <ringohub@gmail.com> (https://github.com/ringohub)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ringohub/slack-emoji-exporter/issues"
+    "url": "https://github.com/ringohub/slackee/issues"
   },
-  "homepage": "https://github.com/ringohub/slack-emoji-exporter#readme",
+  "homepage": "https://github.com/ringohub/slackee#readme",
   "dependencies": {
     "@slack/client": "4.3.1",
     "cli-table2": "0.2.0",
     "download": "7.0.0",
-    "imgcat": "2.3.0",
     "meow": "5.0.0",
     "ora": "2.1.0"
   }
