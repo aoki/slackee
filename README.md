@@ -8,7 +8,7 @@
 Install from `npm`.
 
 ```bash
-npm install slack-emoji-exporter
+npm -g install slack-emoji-exporter
 ```
 
 Setup environment variables `SLACK_API_TOKEN`.
