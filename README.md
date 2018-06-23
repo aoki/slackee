@@ -26,4 +26,5 @@ slackee -d -o output_dir
 Show helps.
 
 ```bash
+slackee --help
 ```
